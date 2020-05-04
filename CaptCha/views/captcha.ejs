@@ -1,0 +1,161 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Captcha</title>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<style>
+			body {
+				text-align: center;
+			}
+
+			.form {
+				display: inline-block;
+				padding: 10px;
+				border: 1px solid black;
+				border-radius: 3px;
+				margin: 15px;
+			}
+
+			p {
+				text-align: center;
+				margin: 0;
+				margin-bottom: 10px;
+			}
+
+			input {
+				display: none;
+			}
+
+			label {
+				cursor: pointer;
+				display: inline-block;
+				border: 1px solid transparent;
+				padding: 2px;
+				margin: 2px;
+			}
+
+			label img {
+				max-width: 100px;
+				max-height: 100px;
+			}
+
+			button {
+				display: inline-block;
+				margin: auto;
+				margin-top: 10px;
+			}
+
+			input:checked + label {
+				border-color: blue;
+			}
+		</style>
+	</head>
+
+	<body onload="getCaptcha();">
+		<div cass="form" id="captcha__form">
+			<p id="indice">Retrouver le chat amoureux</p>
+			<div id="bloc-captcha">
+			</div>
+			<button onclick="verif();">Valider</button>
+			<button onClick="getCaptcha();">Changer</button>
+		</div>
+	</body>
+
+  <script type="text/javascript">
+	var dossierNeutre = "neutres/";
+	var dossierSingulier = "singuliers/";
+
+	var leschats = getJSON();
+
+	var cle;
+	var num;
+
+	function getNeutres() {
+		let temp = [];
+		for( let i = 1; i <= 13; i++ ) {
+			temp.push("chat neutre "+i);
+		}
+		return temp;
+	}
+
+	function getJSON() {
+		return {
+		  "chat amoureux": "Saurez vous reconnaître un chat amoureux ?",
+		  "chat bien coiffé": "Mon chat est une fausse blonde",
+		  "chat borgne": "Ce chat là a fait une croix sur son oeil",
+		  "chat chapeauté": "C'est encore le chat qui porte le chapeau",
+		  "chat cosmonaute": "Saurez-vous reconnaître le chat de Thomas Pesquet ?",
+		  "chat cyclope": "Un visiteur venu d'ailleurs",
+		  "chat licorne": "Ne confondons pas une salicorne et un chat-licorne !",
+		  "chat malade": "Ce chat là a oublié de se faire vacciner contre la grippe",
+		  "chat moustachu": "Quel type de chat se cache derrière ses moustaches ?",
+		  "chat myope": "Chaussez vos lunettes et montrez-moi le chat myope ?",
+		  "chat pirate": "Après la fiancée du pirate, voici le chat du corsaire",
+		  "chat plongeur": "Chat du grand bleu",
+		  "chat princesse": "C'est la reine d'Angleterre qui a perdu son chat",
+		  "chat titi parisien": "Après les gilets jaunes, voici les foulards rouges"
+		};
+	}
+
+	function getCaptcha() {
+		cle = getCle(leschats);
+		setCaptcha(3);
+	}
+
+	function lengthJSON(json) {
+		let cnt = 0;
+		for (i in json) cnt++;
+		return cnt;
+	}
+
+	function getCle(tab) {
+		var rand = Math.floor( Math.random() * lengthJSON(tab) );
+		var i = 0;
+		for (cle in tab) {
+			if( i == rand ) {
+				return cle;
+			}
+			i++;
+		}
+	}
+
+	function setCaptcha(taille) {
+		var cible = $('#bloc-captcha');
+		let neutres = getNeutres();
+
+		cible.empty();
+
+		$('#indice').text(leschats[cle]);
+
+		var rand = Math.floor( Math.random() * (taille * taille) ) + 1;
+		num = rand;
+
+		for( let i = 1; i <= taille*taille; i++ ) {
+			if( i == rand ) {
+				cible.append('<input type="checkbox" name="chat'+i+'" id="chat'+i+'" value="'+i+'"><label for="chat'+i+'"><img src="'+dossierSingulier+cle+'.jpg"></img></label>');
+			} else {
+				var n = Math.floor( Math.random() * neutres.length );
+				cible.append('<input type="checkbox" name="chat'+i+'" id="chat'+i+'" value="'+i+'"><label for="chat'+i+'"><img src="'+dossierNeutre+neutres[n]+'.jpg"></img></label>');
+				neutres.splice(n,1);
+			}
+
+			if( i % taille == 0 ) {
+				cible.append('<br>');
+			}
+		}
+	}
+
+	function verif() {
+		let value = "";
+		$( "input:checked" ).each(function( index ) {
+			value += ""+this.value;
+		});
+		if( num != value ) {
+			alert ('Le captcha est faux');
+			getCaptcha();
+		} else {
+			alert ('Le captcha est ok');
+		}
+	}
+  </script>
+</html>
