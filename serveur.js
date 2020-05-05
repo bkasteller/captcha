@@ -13,7 +13,10 @@ app.use(bodyParser.json())
 
 // Routes
 app.get('/', (request, response) => {
-  response.render('captcha', {data: JSON.parse(fs.readFileSync('public/images/LesChats.json', 'utf8'))})
+  response.render('captcha', {
+    data: JSON.parse(fs.readFileSync('public/images/LesChats.json', 'utf8'))
+  })
 })
 
+// Port 8080
 app.listen(8080)

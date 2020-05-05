@@ -1,0 +1,30 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Captcha</title>
+
+		<link rel="stylesheet" type="text/css" href="css/captCha.css" />
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script type="text/javascript">var leschats =  <%-JSON.stringify(data)%>;</script>
+		<script type="text/javascript" src="javascript/captCha.js"></script>
+	</head>
+
+	<body onload="getCaptcha();">
+		<div class="form" id="captcha__form">
+			<div class="left">
+				<p class="indice" id="indice">Retrouver le chat amoureux</p>
+				<div id="bloc-captcha">
+				</div>
+				<span class="time" id="time"></span>
+				<button onclick="verif();">Valider</button>
+				<button onClick="reload();">Changer</button>
+			</div>
+			<div class="right">
+				<canvas id="canvas" class="timebar"></canvas>
+			</div>
+		</div>
+	</body>
+
+</html>
