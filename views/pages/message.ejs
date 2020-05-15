@@ -1,0 +1,57 @@
+<%- include ("../layouts/header") %>
+
+<h1 id="demo">Test</h1>
+
+<form actions="/message" method="post" class="ui form">
+	<div class="field">
+		<label for="message">Message</label>
+		<textarea name="message" id="message"></textarea>
+	</div>
+	<button type="submit" class="ui blue labeled submit icon button">
+		<i class="icon edit"></i> Envoyer
+	</button>
+</form>
+
+<div class="ui comments">
+	<h3 class="ui dividing header">Commentaires</h3>
+	<% for (message of messages) { %>
+	<div class="comment">
+		<a class="avatar" href="/post/<%= message.id %>">
+			<img src="https://image.flaticon.com/icons/svg/172/172131.svg">
+		</a>
+		<div class="content">
+			<div class="metadata">
+				<div class="date">
+					<%= message.created_at.fromNow() %>
+				</div>
+			</div>
+			<div class="text"><%= message.content %></div>
+		</div>
+	</div>
+	<% } %>
+</div>
+
+<script>
+let demo = document.getElementById("demo")
+let xhr = new XMLHttpRequest()
+
+window.onload = function () {
+    demo = document.getElementById("demo")
+}
+
+xhr.onreadystatechange = function() {
+    console.log(this);
+    if (this.readyState === 4 && this.status === 200) {
+		let data = this.response;
+        demo.innerHTML = data;
+    } else if (this.readyState === 4 && this.status === 404) {
+		alert('Erreur 404 :(')
+	}
+}
+
+xhr.open("GET", "async/texte.txt", true)
+xhr.responseType = "text"
+xhr.send()
+</script>
+
+<%- include ("../layouts/footer") %>

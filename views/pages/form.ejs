@@ -1,32 +1,36 @@
 <%- include ("../layouts/header") %>
 
-<form actions="/formulaire" method="post" class="ui form">
+<h1>Ajouter un captcha</h1>
+
+<form actions="/formulaire" enctype="multipart/form-data" method="post" class="ui form">
 	<div class="field">
-		<label for="message">Message</label>
-		<textarea name="message" id="message"></textarea>
+		<label for="name">Nom*</label>
+		<input type="text" name="name" id="name" placeholder="Nommer le captcha" max-maxlength="55" required>
 	</div>
+
+	<div class="field">
+		<label for="theme">Thème*</label>
+		<select name="theme_id" id="theme" required>
+		    <option value="" selected disabled>Selectionner un thème</option>
+			<% for (theme of themes) { %>
+			<option value="<%= theme.id %>"><%= theme.name %></option>
+			<% } %>
+		</select>
+	</div>
+
+	<div class="field">
+		<label for="neutres">Lot d'images neutres*</label>
+		<input type="file" name="neutres" id="neutres" accept=".rar, .zip" required>
+	</div>
+
+	<!--<div class="field">
+		<label for="singuliers">Lot d'images singulières*</label>
+		<input type="file" name="singuliers" id="singuliers" accept=".rar, .zip" required>
+	</div>-->
+
 	<button type="submit" class="ui blue labeled submit icon button">
-		<i class="icon edit"></i> Envoyer
+		<i class="icon edit"></i> Soumettre
 	</button>
 </form>
-
-<div class="ui comments">
-	<h3 class="ui dividing header">Commentaires</h3>
-	<% for (message of messages) { %>
-	<div class="comment">
-		<a class="avatar" href="/post/<%= message.id %>">
-			<img src="https://cdn.icon-icons.com/icons2/1736/PNG/512/4043247-1-avatar-female-portrait-woman_113261.png">
-		</a>
-		<div class="content">
-			<div class="metadata">
-				<div class="date">
-					<%= message.created_at.fromNow() %>
-				</div>
-			</div>
-			<div class="text"><%= message.content %></div>
-		</div>
-	</div>
-	<% } %>
-</div>
 
 <%- include ("../layouts/footer") %>

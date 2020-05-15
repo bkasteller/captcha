@@ -1,5 +1,12 @@
 <%- include ("../layouts/header") %>
 
-<h1>Bienvenu</h1>
+<h1>Captcha.ge</h1>
+<p>Gestionnaire de captcha</p>
+
+<h2>Captcha disponible(s) :</h2>
+
+<% for (package of packages) { %>
+<a href=""><strong><%= package.name %> : </strong>&lt;div id="<%= package.name %>"&gt;&lt;/div&gt;</a><br />
+<% } %>
 
 <%- include ("../layouts/footer") %>
