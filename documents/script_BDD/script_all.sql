@@ -1,6 +1,19 @@
+Drop table if exists users;
 Drop table if exists messages;
 Drop table if exists themes;
 Drop table if exists captcha;
+
+#------------------------------------------------------------
+# Table: users
+#------------------------------------------------------------
+
+CREATE TABLE users
+(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(55),
+  email VARCHAR(75),
+  password VARCHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #------------------------------------------------------------
 # Table: messages
@@ -21,7 +34,7 @@ CREATE TABLE messages
 CREATE TABLE themes
 (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  name varchar(55)
+  name VARCHAR(55)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO themes (id, name)
@@ -38,7 +51,7 @@ VALUES (3, "Graphisme");
 CREATE TABLE captcha
 (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  name varchar(55),
+  name VARCHAR(55),
   theme_id INT NOT NULL,
   FOREIGN KEY(theme_id) REFERENCES themes(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

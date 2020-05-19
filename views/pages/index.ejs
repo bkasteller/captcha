@@ -1,9 +1,6 @@
 <%- include ("../layouts/header") %>
 
-<h1>Captcha.ge</h1>
-<p>Gestionnaire de captcha</p>
-
-<h2>Captcha disponible(s) :</h2>
+<h1>Captcha disponible(s) :</h1>
 
 <% for (package of packages) { %>
 <a href=""><strong><%= package.name %> : </strong>&lt;div id="<%= package.name %>"&gt;&lt;/div&gt;</a><br />

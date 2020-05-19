@@ -1,10 +1,25 @@
-let express = require('express')
-let fs = require('fs')
+let express = require('express'),
+    fs = require('fs'),
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+    validator = require('express-validator'),
+    multer = require('multer'),
+    ejs = require('ejs'),
+    bcrypt = require('bcrypt')
+
+const TWO_HOURS = 1000 * 60 * 60 * 2
+const {
+    PORT = 8080,
+    NODE_ENV = 'development',
+
+    SESS_NAME = 'sid',
+    SESS_SECRET = 'ssh! This is asecret',
+    SESS_LIFETIME = TWO_HOURS
+} = process.env
+const IN_PROD = NODE_ENV === 'production'
+
 let app = express()
-let bodyParser = require('body-parser')
-let session = require('express-session')
-let multer = require('multer')
-let ejs = require('ejs')
+
 
 // Gestion des upload
 let storage = multer.diskStorage({
@@ -25,29 +40,106 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(session({
-    secret: 'keyboard cat',
+    name: SESS_NAME,
+    secret: SESS_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
+    saveUninitialized: false,
+    cookie: {
+        maxAge: SESS_LIFETIME,
+        sameSite: true,
+        secure: IN_PROD
+    }
 }))
-app.use(require(__dirname+'/middlewares/flash'))
+app.use(require(__dirname+'/middlewares/flash'), (req, res, next) => {
+    let User = require(__dirname+'/models/user')
+    const { userId } = req.session
+    if (userId) {
+        User.find(userId, (user) => {
+            res.locals.user = user
+        })
+    }
+    next()
+})
+
+const redirectLogin = (request, response, next) => {
+    if(!request.session.userId) {
+        response.redirect('/login')
+    } else {
+        next()
+    }
+}
+
+const redirectHome = (request, response, next) => {
+    if(request.session.userId) {
+        response.redirect('/')
+    } else {
+        next()
+    }
+}
 
 // Routes
-app.get('/', (request, response) => {
+app.get('/', redirectLogin, (request, response) => {
+    const { userId } = request.session
     let Captcha = require(__dirname+'/models/captcha')
     Captcha.all((packages) => {
-        response.render('pages/index', {packages: packages})
+        response.render('pages/index', {userId: userId, packages: packages})
     })
 })
 
-app.get('/formulaire', (request, response) => {
+app.get('/login', redirectHome, (request, response) => {
+    response.render('auth/login')
+})
+
+app.get('/register', redirectHome, (request, response) => {
+    response.render('auth/register')
+})
+
+app.post('/login', redirectHome, (request, response) => {
+    const { email, password } = request.body
+    if (email && password) {
+        let User = require(__dirname+'/models/user')
+        User.getUserByEmail(email, async (user) => {
+            if (await bcrypt.compare(request.body.password, user.password)) {
+                request.session.userId = user.id
+                request.flash('success', "Vous êtes connecté.")
+                response.redirect('/')
+            } else {
+                request.flash('error', "Echec de l'authentification.")
+                response.redirect('/login')
+            }
+        })
+    }
+})
+
+app.post('/register', redirectHome, async (request, response) => {
+    try {
+        let User = require(__dirname+'/models/user')
+        await bcrypt.hash(request.body.password, 10)
+        let password = request.body.password
+        User.create(request.body.name, request.body.email, password, () => {
+            request.flash('success', "Votre compte a bien été crée.")
+            response.redirect('/login')
+        })
+    } catch {
+        request.flash('error', "Erreur lors de la création du compte.")
+        response.redirect('/register')
+    }
+})
+
+app.get('/logout', redirectLogin, (request, response) => {
+    request.session.destroy()
+    response.clearCookie(SESS_NAME)
+    response.redirect('/login')
+})
+
+app.get('/formulaire', redirectLogin, (request, response) => {
     let Theme = require(__dirname+'/models/theme')
     Theme.all((themes) => {
         response.render('pages/form', {themes: themes})
     })
 })
 
-app.post('/formulaire', upload.single('neutres', 20), (request, response, next) => {
+app.post('/formulaire', redirectLogin, upload.single('neutres', 20), (request, response, next) => {
     if (!request.file) {
         request.flash('error', "Aucun fichier.")
         response.redirect('/formulaire')
@@ -93,4 +185,4 @@ app.get('/captcha', (request, response) => {
 })
 
 // Port 8080
-app.listen(8080, () => console.log('Server started on port 8080'))
+app.listen(PORT, () => console.log('Server started on port 8080'))

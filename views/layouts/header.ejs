@@ -3,11 +3,14 @@
 	<head>
 		<title>Captcha.ge</title>
 
+		<!-- Stylesheet -->
 		<link rel="stylesheet" href="/semantic/semantic.min.css">
 
+		<!-- Scripts -->
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script type="text/javascript" src="/javascript/app.js"></script>
 
+		<!-- CSS-->
 		<style>
 			.main.container {
 				padding-top: 7em;
@@ -20,6 +23,14 @@
             <a href="/" class="header item">Accueil</a>
 			<a href="/message" class="item">Messagerie</a>
             <a href="/formulaire" class="item">+ Captcha</a>
+			<div class="right menu">
+				<% if(!locals.user) { %>
+			    <a href="/login" class="ui item">Connexion</a>
+				<a href="/register" class="ui item">Inscription</a>
+				<% } else { %>
+				<a href="/logout" class="ui item">Deconnexion</a>
+				<% } %>
+			</div>
         </div>
 
 		<div class="ui main container">

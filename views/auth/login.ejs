@@ -1,0 +1,21 @@
+<%- include ("../layouts/header") %>
+
+<h1>Connexion</h1>
+
+<form action="/login" method="post" class="ui form">
+    <div class="field">
+		<label for="email">Email*</label>
+		<input type="email" name="email" id="email" placeholder="Ex: dupont.marc@mail.fr" max-maxlength="75" required>
+	</div>
+
+    <div class="field">
+		<label for="password">Password*</label>
+		<input type="password" name="password" id="password" max-maxlength="30" required>
+	</div>
+
+    <button type="submit" class="ui blue labeled submit icon button">
+		<i class="icon edit"></i> Connexion
+	</button>
+</form>
+
+<%- include ("../layouts/footer") %>
