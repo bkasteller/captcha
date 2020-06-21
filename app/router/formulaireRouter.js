@@ -17,10 +17,10 @@ module.exports = {
                 request.flash('success', "Captcha ajouté.")
                 Captcha.find(result.insertId, (captcha) => {
                     require('fs').mkdir("public" + captcha.url, (e) => {
-                        Object.keys(files).forEach((key) => {
+                        /*Object.keys(files).forEach((key) => {
                           let file = files[key]
                           renameZip(file, join("public" + captcha.url, file.name))
-                        })
+                      })*/
                     })
                     response.redirect('/packages/' + captcha.id + '/indices')
                 })

@@ -8,8 +8,9 @@
             <label for="theme_id">Thème</label>
             <select name="theme_id" id="theme_id" onchange="document.getElementById('search-form').submit();">
                 <option value="%">All</option>
-                <option value="1" <% if (locals.selected_theme && selected_theme == 1) { %>selected<% } %>>1</option>
-                <option value="2" <% if (locals.selected_theme && selected_theme == 2) { %>selected<% } %>>2</option>
+                <% for (theme of themes) { %>
+                    <option value="<%= theme.id %>" <% if (locals.selected_theme && selected_theme == theme.id) { %>selected<% } %>><%= theme.name %></option>
+                <% } %>
             </select>
     	</div>
 
@@ -17,7 +18,9 @@
             <label for="user_id">Créateur</label>
             <select name="user_id" id="user_id" onchange="document.getElementById('search-form').submit();">
                 <option value="%">All</option>
-                <option value="1" <% if (locals.selected_user && selected_user == 1) { %>selected<% } %>><% if (locals.user && user.id == 1) { %>moi<% } else { %>1<% } %></option>
+                <% for (usr of users) { %>
+                    <option value="<%= usr.id %>" <% if (locals.selected_user && selected_user == usr.id ) { %>selected<% } %>><% if (locals.user && user.id == usr.id) { %>moi<% } else { %><%= usr.name %><% } %></option>
+                <% } %>
             </select>
     	</div>
     </form>

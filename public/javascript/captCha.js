@@ -1,10 +1,7 @@
-var dossierNeutre = "images/neutres/";
-var dossierSingulier = "images/singuliers/";
-
 var timer;
 var timer_total = 30;
 var timer_decre = 5;
-var timer_min = 15;
+var timer_min = 10;
 
 var cle;
 var num;
@@ -55,10 +52,10 @@ function setCaptcha(taille) {
 
   for( let i = 1; i <= taille*taille; i++ ) {
     if( i == rand ) {
-      cible.append('<input type="checkbox" name="chat'+i+'" id="chat'+i+'" value="'+i+'"><label for="chat'+i+'"><img src="'+dossierSingulier+cle+'.jpg"></img></label>');
+      cible.append('<input type="checkbox" name="chat'+i+'" id="chat'+i+'" value="'+i+'"><label for="chat'+i+'"><img src="/'+dossierSingulier+cle+'.jpg"></img></label>');
     } else {
       var n = Math.floor( Math.random() * neutres.length );
-      cible.append('<input type="checkbox" name="chat'+i+'" id="chat'+i+'" value="'+i+'"><label for="chat'+i+'"><img src="'+dossierNeutre+neutres[n]+'.jpg"></img></label>');
+      cible.append('<input type="checkbox" name="chat'+i+'" id="chat'+i+'" value="'+i+'"><label for="chat'+i+'"><img src="/'+dossierNeutre+neutres[n]+'.jpg"></img></label>');
       neutres.splice(n,1);
     }
 

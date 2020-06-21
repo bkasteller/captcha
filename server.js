@@ -43,7 +43,7 @@ let homeController = require(__dirname+'/app/controller/homeController')
 
 app.route('/')
    .get(redirectLogin, homeController.index)
-   .post(redirectLogin, homeController.show)
+   .post(redirectLogin, homeController.index)
 
 let loginRouter = require(__dirname+'/app/router/loginRouter')
 
@@ -65,7 +65,7 @@ let formulaireRouter = require(__dirname+'/app/router/formulaireRouter')
 
 app.route('/formulaire')
    .get(redirectLogin, formulaireRouter.get)
-   .post(redirectLogin, upload.multiple('files', 40), formulaireRouter.post)
+   .post(redirectLogin, upload.single('neutres'), formulaireRouter.post)
 
 let userController = require(__dirname+'/app/controller/userController')
 
@@ -114,13 +114,10 @@ app.get('/post/:id', (request, response) => {
     Message.find(request.params.id, (message) => {
         response.render('package/show', {message: message})
     })
-})
-
-app.get('/captcha', (request, response) => {
-    response.render('pages/captcha', {
-        data: JSON.parse(fs.readFileSync('/images/LesChats.json', 'utf8'))
-    })
 })*/
+
+let captchaController = require(__dirname+'/app/controller/captchaController')
+app.get('/captcha', captchaController.show)
 
 let port = config.get('App.webServer.port')
 
