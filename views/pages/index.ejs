@@ -2,8 +2,51 @@
 
 <h1>Captcha disponible(s) :</h1>
 
-<% for (package of packages) { %>
-<a href=""><strong><%= package.name %> : </strong>&lt;div id="<%= package.name %>"&gt;&lt;/div&gt;</a><br />
-<% } %>
+<div class="content">
+    <form actions="/"  method="post" class="ui form" id="search-form">
+    	<div class="field">
+            <label for="theme_id">Thème</label>
+            <select name="theme_id" id="theme_id" onchange="document.getElementById('search-form').submit();">
+                <option value="%">All</option>
+                <option value="1" <% if (locals.selected_theme && selected_theme == 1) { %>selected<% } %>>1</option>
+                <option value="2" <% if (locals.selected_theme && selected_theme == 2) { %>selected<% } %>>2</option>
+            </select>
+    	</div>
+
+    	<div class="field">
+            <label for="user_id">Créateur</label>
+            <select name="user_id" id="user_id" onchange="document.getElementById('search-form').submit();">
+                <option value="%">All</option>
+                <option value="1" <% if (locals.selected_user && selected_user == 1) { %>selected<% } %>><% if (locals.user && user.id == 1) { %>moi<% } else { %>1<% } %></option>
+            </select>
+    	</div>
+    </form>
+
+
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Url</th>
+                <th>Thème</th>
+                <th>Créateur</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (package of packages) { %>
+            <tr>
+                <td><%= package.id %></td>
+                <td><%= package.name %></td>
+                <td><%= package.url %></td>
+                <td><%= package.theme_id %></td>
+                <td><%= package.user_id %></td>
+                <td><a href="/packages/<%= package.id %>">inspecter</a></td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
 
 <%- include ("../layouts/footer") %>

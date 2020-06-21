@@ -1,0 +1,45 @@
+<%- include ("../layouts/header") %>
+
+<h1>Captcha n°<%= package.id %> : "<%= package.name %>"</h1>
+
+<div class="content">
+<% if(locals.user && (user.isAdmin || user.id === package.user_id)) { %>
+	<p>Vous êtes le créateur</P>
+	<form action="" method="post" class="ui form">
+		<div class="field">
+			<label for="name">Nom</label>
+			<input type="text" name="name" id="name" value="<%= package.name %>" max-maxlength="55" required>
+		</div>
+
+		<p>Url d'intégration : <%= package.url %></p>
+
+		<div class="field">
+			<label for="themes">Thème</label>
+			<select name="theme" id="theme" required>
+			<% for (theme of themes) { %>
+				<option value="<%= theme.id %>" <% if (theme.id == package.theme_id) { %> selected <% } %>><%= theme.name %></option>
+			<% } %>
+			</select>
+		</div>
+
+		<input type="hidden" name="id" value="<%= package.id %>">
+
+		<button type="submit" class="ui blue labeled submit icon button">
+			<i class="icon edit"></i> Modifier
+		</button>
+	</form>
+
+	<br>
+	<a href="/packages/<%= package.id %>/indices" class="ui blue icon button">Modifier les indices</a>
+
+	<br><br>
+	<a href="/packages/<%= package.id %>/delete" class="ui red icon button" onclick="event.preventDefault(); document.getElementById('delete-package').submit();">Supprimer</a>
+	<form action="/packages/<%= package.id %>/delete" method="post" id="delete-package" style="display: none;"></form>
+<% } else { %>
+	<p>Url d'intégration : <%= package.url %></p>
+	<p>Thème : <%= package.theme_id %></p>
+	<p>Créateur : <%= package.user_id %></p>
+<% } %>
+</div>
+
+<%- include ("../layouts/footer") %>

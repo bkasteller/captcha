@@ -1,0 +1,28 @@
+{
+    "App": {
+        "name": "Captcha project",
+        "env": "development",
+        "lang": "en",
+        "webServer": {
+            "protocol": "http",
+            "host": "localhost",
+            "port": 8080
+        },
+        "session": {
+            "name": "sid",
+            "secret": "ssh! This is asecret key",
+            "cookie": {
+                "lifetime": 7200000
+            }
+        },
+        "stockage": {
+            "imgPath": "public/captcha"
+        }
+    },
+    "MySQL": {
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "database": "captcha"
+    }
+}

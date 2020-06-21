@@ -1,0 +1,24 @@
+<%- include ("../layouts/header") %>
+
+<h1>Indices</h1>
+
+<form actions="/packages/<%= package.id %>/indices" method="post" id="test" class="ui form">
+	<% let i = 1 %>
+	<% 	for (img in data) { %>
+		<hr>
+		<div class="field">
+			<label for="indice<%= i %>"><img src="<%= package.url %>/singuliers/<%= img %>.jpg" width="50"><%= i %>. <%= img %></label>
+			<input type="text" name="<%= img %>" id="indice<%= i %>" value="<%= data[img] %>">
+		</div>
+	<% i++ %>
+	<% 	} %>
+
+	<input type="hidden" name="id" value="<%= package.id %>">
+	<input type="hidden" name="url" value="<%= package.url %>">
+
+	<button type="submit" class="ui blue labeled submit icon button">
+		<i class="icon edit"></i> Valider
+	</button>
+</form>
+
+<%- include ("../layouts/footer") %>

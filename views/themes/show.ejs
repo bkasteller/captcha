@@ -1,0 +1,39 @@
+<%- include ("../layouts/header") %>
+
+<h1>Liste des thèmes</h1>
+
+<div class="content">
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (theme of themes) { %>
+            <tr>
+                <td><%= theme.id %></td>
+                <td><%= theme.name %></td>
+                <td><a href="/themes/<%= theme.id %>/delete">supprimer</a></td>
+            </tr>
+            <% } %>
+            <tr>
+                <td colspan="3" style="text-align: center;">
+                    <form action="/themes/create" method="post" class="ui form">
+                        <div class="field">
+                    		<input type="text" name="name" id="name" placeholder="Ex: Sport" max-maxlength="55" required>
+                    	</div>
+
+                        <button type="submit" class="ui blue labeled submit icon button">
+                    		<i class="icon edit"></i> Ajouter
+                    	</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<%- include ("../layouts/footer") %>

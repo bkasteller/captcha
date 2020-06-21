@@ -1,10 +1,11 @@
-let mysql = require('mysql')
+let mysql       = require('mysql')
+let config      = require('config')
 
 let connection = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database : 'captcha'
+    host        : config.get('MySQL.host'),
+    user        : config.get('MySQL.user'),
+    password    : config.get('MySQL.password'),
+    database    : config.get('MySQL.database')
 })
 
 connection.connect()

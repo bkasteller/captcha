@@ -1,0 +1,20 @@
+<%- include ("../layouts/header") %>
+
+<div class="ui comments">
+	<h3 class="ui dividing header">Commentaires</h3>
+		<div class="comment">
+		<a class="avatar" href="/post/<%= message.id %>">
+			<img src="https://cdn.icon-icons.com/icons2/1736/PNG/512/4043247-1-avatar-female-portrait-woman_113261.png">
+		</a>
+		<div class="content">
+			<div class="metadata">
+				<div class="date">
+					<%= message.created_at.fromNow() %>
+				</div>
+			</div>
+			<div class="text"><%= message.content %></div>
+		</div>
+	</div>
+</div>
+
+<%- include ("../layouts/footer") %>

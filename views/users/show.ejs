@@ -1,0 +1,37 @@
+<%- include ("../layouts/header") %>
+
+<h1>Liste des utilisateurs</h1>
+
+<div class="content">
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Statut</th>
+                <th>Créations</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (usr of users) { %>
+            <tr>
+                <td><%= usr.id %></td>
+                <td><%= usr.name %></td>
+                <td><%= usr.status %></td>
+                <td>
+                    <a href="/" onclick="event.preventDefault(); document.getElementById('voir-form').submit();">voir</a>
+                    <form action="/" method="post" id="voir-form" style="display: none;">
+                        <input type="hidden" name="user_id" value="<%= usr.id %>">
+                    </form>
+                </td>
+                <td><a href="/users/<%= usr.id %>">modifier</a></td>
+                <td><% if (user.id !== usr.id) { %><a href="/users/delete/<%= usr.id %>">supprimer</a><% } %></td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include ("../layouts/footer") %>

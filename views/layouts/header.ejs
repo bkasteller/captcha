@@ -21,25 +21,31 @@
 	<body>
 		<div class="ui fixed inverted menu">
             <a href="/" class="header item">Accueil</a>
-			<a href="/message" class="item">Messagerie</a>
-            <a href="/formulaire" class="item">+ Captcha</a>
+            <a href="/formulaire" class="item">Poster</a>
+			<% if(locals.user && user.isAdmin) { %>
+			<a href="/users" class="item">Utilisateurs</a>
+			<a href="/themes" class="item">Thèmes</a>
+			<% } %>
 			<div class="right menu">
 				<% if(!locals.user) { %>
 			    <a href="/login" class="ui item">Connexion</a>
 				<a href="/register" class="ui item">Inscription</a>
 				<% } else { %>
-				<a href="/logout" class="ui item">Deconnexion</a>
+				<span class='ui item' style="color: blue;"><%= user.name %></span>
+				<span class='ui item' style="color: red;"><%= user.status %></span>
+				<a href="/logout" class="ui item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Deconnexion</a>
+				<form action="/logout" method="post" id="logout-form" style="display: none;"></form>
 				<% } %>
 			</div>
         </div>
 
 		<div class="ui main container">
-			<% if (locals.flash && locals.flash.error) { %>
+			<% if (locals.flash && flash.error) { %>
 			<div class="ui negative message">
 				<%= flash.error %>
 			</div>
 			<% } %>
-			<% if (locals.flash && locals.flash.success) { %>
+			<% if (locals.flash && flash.success) { %>
 			<div class="ui positive message">
 				<%= flash.success %>
 			</div>
